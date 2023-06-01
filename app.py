@@ -33,7 +33,7 @@ def index():
 
         today = datetime.now().date()
         last_week = today - timedelta(days=7)
-        this_month = today.replace(day=1)
+        this_month = today - timedelta(days=30)
         last_year = today - timedelta(days=365)
 
         if desired_date == today:
