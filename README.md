@@ -20,11 +20,11 @@ Um diese Anwendung auszuführen, müssen die folgenden Voraussetzungen erfüllt 
   ```
 3. Baue das Docker-Image:
   ``` bash
-  docker build -t tweetfeed-app .
+  docker build -t masluse/tweetfeed-api-webserver:latest .
   ```
 4. Führe den Docker-Container aus:
   ``` bash
-  docker run -d -p 5000:5000 tweetfeed-app
+  docker run -d -p 5001:5000 masluse/tweetfeed-api-webserver:latest
   ```
 5. Öffne einen Webbrowser und gehe zu http://localhost:5000, um die Anwendung aufzurufen.
 # Anwendung verwenden
