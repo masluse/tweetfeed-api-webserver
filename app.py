@@ -42,10 +42,8 @@ def index():
             api_endpoint = 'https://api.tweetfeed.live/v1/week'
         elif desired_date >= this_month:
             api_endpoint = 'https://api.tweetfeed.live/v1/month'
-        elif desired_date >= last_year:
-            api_endpoint = 'https://api.tweetfeed.live/v1/year'
         else:
-            return "Das gewünschte Datum liegt mehr als 1 Jahr zurück."
+            return "Das gewünschte Datum liegt mehr als 1 Monat zurück."
 
         response = requests.get(api_endpoint)
         if response.status_code == 200:
