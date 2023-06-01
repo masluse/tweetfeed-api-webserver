@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+    <title>Datumssuche</title>
+
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+
+</head>
+
+<body class="container pt-5">
+
+    <h1>Datumssuche</h1>
+
+    <form method="POST" class="pt-3">
+
+        <div class="form-group">
+
+            <label for="date">Datum:</label><br>
+
+            <input type="date" id="date" name="date" class="form-control">
+
+        </div>
+
+        <input type="submit" value="Suchen" class="btn btn-primary">
+
+    </form>
+
+
+    <div id="result" class="pt-3">
+
+        {% if urls %}
+
+            <h2>URLs</h2>
+
+            <p>{{ urls }}</p>
+
+        {% endif %}
+
+        {% if ips %}
+
+            <h2>IPs</h2>
+
+            <p>{{ ips }}</p>
+
+        {% endif %}
+
+    </div>
+
+</body>
+
+</html>
+
