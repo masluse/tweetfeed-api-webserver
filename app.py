@@ -51,8 +51,9 @@ def index():
 
         last_week = today - timedelta(days=7)
 
-        this_month = today.replace(day=1)
+        last_30_days = today - timedelta(days=30)
 
+        last_365_days = today - timedelta(days=365)
 
         if desired_date == today:
 
@@ -62,13 +63,17 @@ def index():
 
             api_endpoint = 'https://api.tweetfeed.live/v1/week'
 
-        elif desired_date >= this_month:
+        elif desired_date >= last_30_days:
 
             api_endpoint = 'https://api.tweetfeed.live/v1/month'
 
+        elif desired_date >= last_365_days:
+
+            api_endpoint = 'https://api.tweetfeed.live/v1/year'
+   
         else:
 
-            return "Das gewünschte Datum liegt außerhalb des aktuellen Monats."
+            return "Das gewünschte Datum liegt außerhalb des möglichen bereiches."
 
 
         response = requests.get(api_endpoint)
