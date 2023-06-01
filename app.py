@@ -35,7 +35,7 @@ def index():
         last_week = today - timedelta(days=7)
         this_month = today - timedelta(days=30)
         last_year = today - timedelta(days=365)
-        tomorrow = today + timedelta(day=1)
+        tomorrow = today + timedelta(days=1)
 
         if desired_date == today:
             api_endpoint = 'https://api.tweetfeed.live/v1/today'
