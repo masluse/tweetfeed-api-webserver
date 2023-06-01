@@ -35,7 +35,9 @@ def index():
         last_week = today - timedelta(days=7)
         this_month = today - timedelta(days=30)
         last_year = today - timedelta(days=365)
-        tomorrow = today + timedelta(days=1)
+        
+        if desired_date > today:
+            return "Das ausgewählte Datum liegt in der Zukunft."
 
         if desired_date == today:
             api_endpoint = 'https://api.tweetfeed.live/v1/today'
@@ -43,8 +45,6 @@ def index():
             api_endpoint = 'https://api.tweetfeed.live/v1/week'
         elif desired_date >= this_month:
             api_endpoint = 'https://api.tweetfeed.live/v1/month'
-        elif desired_date >= tomorrow:
-            return "Das gewünschte Datum liegt in der Zukunft."
         else:
             return "Das gewünschte Datum liegt mehr als 1 Monat zurück."
 
