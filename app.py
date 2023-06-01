@@ -7,15 +7,20 @@ from datetime import datetime, timedelta
 
 app = Flask(__name__)
 
+# Liste der vorgefertigten Domains
+predefined_domains = ['github.com', 'dropbox.com']
+
 def remove_port_from_url(url):
     # Entferne den Port aus der URL, falls vorhanden
     url_parts = urllib.parse.urlparse(url)
     return url_parts.netloc.split(':')[0]
 
-def is_valid_url(url):
-    # Überprüfe, ob die URL wie eine IP-Adresse aussieht
+def is_valid_url(url, block_all_domains):
+    # Überprüfe, ob die URL wie eine IP-Adresse aussieht oder zu den blockierten Domains gehört
     ip_pattern = re.compile(r'^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$')
     if ip_pattern.match(url):
+        return False
+    if block_all_domains and any(domain in url for domain in predefined_domains):
         return False
     return True
 
@@ -23,6 +28,7 @@ def is_valid_url(url):
 def index():
     if request.method == 'POST':
         desired_date_str = request.form.get('date')
+        block_all_domains = 'block_domains' in request.form
         if not desired_date_str:
             return "Bitte gib ein gültiges Datum ein."
 
@@ -61,14 +67,14 @@ def index():
                     if entry['type'] == 'url':
                         url = entry['value']
                         url_without_port = remove_port_from_url(url)
-                        if is_valid_url(url_without_port):
+                        if is_valid_url(url_without_port, block_all_domains):
                             urls.append(f'"{url_without_port}"')
                     elif entry['type'] == 'ip':
                         ips.append(entry["value"])
 
-            return render_template('index.html', urls=' OR '.join(urls), ips=' OR '.join(ips))
+            return render_template('index.html', urls=' OR '.join(urls), ips=' OR '.join(ips), domains=predefined_domains)
 
-    return render_template('index.html')
+    return render_template('index.html', domains=predefined_domains)
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000)
