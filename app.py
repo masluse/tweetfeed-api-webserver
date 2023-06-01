@@ -8,7 +8,7 @@ from datetime import datetime, timedelta
 app = Flask(__name__)
 
 # Liste der vorgefertigten Domains
-predefined_domains = ['github.com', 'dropbox.com']
+predefined_domains = ['github.com', 'dropbox.com', 'youtu.be', 'bit.ly', 'mega.nz', 'bitbucket.org', 'raw.githubusercontent.com']
 
 def remove_port_from_url(url):
     # Entferne den Port aus der URL, falls vorhanden
