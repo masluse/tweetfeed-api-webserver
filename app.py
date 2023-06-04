@@ -72,7 +72,7 @@ def index():
                     elif entry['type'] == 'ip':
                         ips.append(entry["value"])
 
-            return render_template('index.html', urls=' OR '.join(urls), ips=' OR '.join(ips), domains=predefined_domains)
+            return render_template('index.html', urls=' OR '.join(urls), ips=' OR '.join(ips), num_urls=len(urls), num_ips=len(ips), domains=predefined_domains)
 
     return render_template('index.html', domains=predefined_domains)
 
