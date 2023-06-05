@@ -12,7 +12,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: login Docker
+    - name: Login into Docker Hub
       run: docker login -u masluse -p {{ secrets.DOCKER_TOKEN }}
     - name: Build the Docker image
       run: docker build -t {{ secrets.DOCKER_REPOSITORY }}:latest .
