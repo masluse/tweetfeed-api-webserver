@@ -7,16 +7,15 @@ on:
     branches: [ "main" ]
 
 jobs:
-
   build:
-
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v3
     - name: login Docker
-      run: docker login -u masluse -p $DOCKER_TOKEN
+      run: docker login -u masluse -p {{ secrets.DOCKER_TOKEN }}
     - name: Build the Docker image
-      run: docker build -t $DOCKER_REPOSITORY:latest .
+      run: docker build -t {{ secrets.DOCKER_REPOSITORY }}:latest .
     - name: Push Docker image
-      run: docker push $DOCKER_REPOSITORY:latest
+      run: docker push {{ secrets.DOCKER_REPOSITORY }}:latest
+
