@@ -10,23 +10,20 @@ Um diese Anwendung auszuführen, müssen die folgenden Voraussetzungen erfüllt 
 
 ## Installation
 
-1. Klone das Repository auf deinen lokalen Computer:
+1. Klone das Repository auf deinen lokalen Computer und Navigiere in das Verzeichnis des geklonten Repositorys:
   ``` bash
   git clone https://github.com/masluse/tweetfeed-api-webserver
-  ```
-2. Navigiere in das Verzeichnis des geklonten Repositorys:
-  ``` bash
   cd tweetfeed-api-webserver
   ```
-3. Baue das Docker-Image:
+2. Baue das Docker-Image:
   ``` bash
   docker build -t masluse/tweetfeed-api-webserver:latest .
   ```
-4. Führe den Docker-Container aus:
+3. Führe den Docker-Container aus:
   ``` bash
-  docker run -d -p 5001:5000 masluse/tweetfeed-api-webserver:latest
+  docker run -d -p 5000:5000 masluse/tweetfeed-api-webserver:latest
   ```
-5. Öffne einen Webbrowser und gehe zu http://localhost:5000, um die Anwendung aufzurufen.
+4. Öffne einen Webbrowser und gehe zu http://localhost:5000, um die Anwendung aufzurufen.
 # Anwendung verwenden
 - Stelle sicher, dass Docker auf deinem System ordnungsgemäß konfiguriert und ausgeführt wird.
 - Die Anwendung ruft Daten von der TweetFeed Live API ab. Stelle sicher, dass du eine stabile Internetverbindung hast, um die API abzurufen.
