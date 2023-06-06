@@ -24,6 +24,21 @@ Um diese Anwendung auszuführen, müssen die folgenden Voraussetzungen erfüllt 
   docker run -d -p 5000:5000 masluse/tweetfeed-api-webserver:latest
   ```
 4. Öffne einen Webbrowser und gehe zu http://localhost:5000, um die Anwendung aufzurufen.
+# Docker-Compose
+``` yaml
+version: "3.8"
+services:
+  tweetfeed-api-webserver:
+    image: masluse/tweetfeed-api-webserver:latest
+    container_name: tweetfeed-api-webserver
+    ports:
+      - 5000:5000
+    environment:
+      - BLOCKED_DOMAINS=domain1,domain2,domain3
+      - TZ=Europe/Zurich
+    restart: always
+```
+
 # Anwendung verwenden
 - Stelle sicher, dass Docker auf deinem System ordnungsgemäß konfiguriert und ausgeführt wird.
 - Die Anwendung ruft Daten von der TweetFeed Live API ab. Stelle sicher, dass du eine stabile Internetverbindung hast, um die API abzurufen.
