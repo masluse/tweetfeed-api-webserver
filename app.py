@@ -4,19 +4,18 @@ import json
 import urllib.parse
 import re
 from datetime import datetime, timedelta
+import os
 
 app = Flask(__name__)
 
-# Liste der vorgefertigten Domains
-predefined_domains = ['github.com', 'dropbox.com', 'youtu.be', 'bit.ly', 'mega.nz', 'bitbucket.org', 'raw.githubusercontent.com']
+blocked_domains = os.getenv('BLOCKED_DOMAINS', '')
+predefined_domains = blocked_domains.split(',') if blocked_domains else None
 
 def remove_port_from_url(url):
-    # Entferne den Port aus der URL, falls vorhanden
     url_parts = urllib.parse.urlparse(url)
     return url_parts.netloc.split(':')[0]
 
 def is_valid_url(url, block_all_domains):
-    # Überprüfe, ob die URL wie eine IP-Adresse aussieht oder zu den blockierten Domains gehört
     ip_pattern = re.compile(r'^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$')
     if ip_pattern.match(url):
         return False
@@ -41,7 +40,7 @@ def index():
         last_week = today - timedelta(days=7)
         this_month = today - timedelta(days=30)
         last_year = today - timedelta(days=365)
-        
+
         if desired_date > today:
             return "Das ausgewählte Datum liegt in der Zukunft."
 

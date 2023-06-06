@@ -1,13 +1,8 @@
 <!DOCTYPE html>
-
 <html>
-
 <head>
-
     <title>Datumssuche</title>
-
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
-
     <style>
         body {
             background-color: #333;
@@ -32,47 +27,43 @@
             border-color: #007bff;
             color: #f8f9fa;
         }
-    </style>
 
+        @media (max-width: 600px) {
+            .form-group.block-domains {
+                position: static;
+                margin-bottom: 20px;
+            }
+        }
+    </style>
 </head>
 
 <body class="container pt-5">
-
     <h1>Datumssuche</h1>
-
     <form method="POST" class="pt-3">
-
         <div class="form-group">
-
             <label for="date">Datum:</label><br>
-
             <input type="date" id="date" name="date" class="form-control">
-
         </div>
 
+        {% if domains %}
         <div class="form-group block-domains">
-
             <label>Alle Domains blockieren:</label><br>
-
             <input type="checkbox" id="block_domains" name="block_domains" checked>
             <label for="block_domains">Blockieren</label><br>
 
             <p>Zu blockierende Domains:</p>
-
             <ul>
             {% for domain in domains %}
                 <li>{{ domain }}</li>
             {% endfor %}
             </ul>
-
         </div>
+        {% endif %}
 
         <input type="submit" value="Suchen" class="btn btn-primary">
-
     </form>
 
     <div id="result" class="pt-3">
-
         {% if urls %}
             <h2>URLs ({{ num_urls }})</h2>
             <p>{{ urls }}</p>
@@ -82,9 +73,6 @@
             <h2>IPs ({{ num_ips }})</h2>
             <p>{{ ips }}</p>
         {% endif %}
-
     </div>
-
 </body>
-
 </html>
