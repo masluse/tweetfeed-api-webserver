@@ -32,10 +32,15 @@ services:
     image: masluse/tweetfeed-api-webserver:latest
     container_name: tweetfeed-api-webserver
     ports:
-      - 5000:5000
+      - 443:5000
     environment:
+      # Blocked_Domains are Optional
       - BLOCKED_DOMAINS=domain1,domain2,domain3
       - TZ=Europe/Zurich
+    volumes:
+      # If the following Volumes are not configured, the image will generate a certificate.
+      #- /host/directory/to/cert.pem:/app/cert.pem
+      #- /host/directory/to/key.pem:/app/key.pem
     restart: always
 ```
 
