@@ -5,11 +5,19 @@ import urllib.parse
 import re
 from datetime import datetime, timedelta
 import os
+import subprocess
+import os.path
+from werkzeug.serving import run_simple
 
 app = Flask(__name__)
 
 blocked_domains = os.getenv('BLOCKED_DOMAINS', '')
 predefined_domains = blocked_domains.split(',') if blocked_domains else None
+
+# Check if SSL certificates exist or not
+if not os.path.isfile('/app/cert.pem') or not os.path.isfile('/app/key.pem'):
+    # Generate self-signed SSL certificate
+    subprocess.call(['openssl', 'req', '-x509', '-newkey', 'rsa:4096', '-nodes', '-out', '/app/cert.pem', '-keyout', '/app/key.pem', '-days', '365', '-subj', '/CN=localhost'])
 
 def remove_port_from_url(url):
     url_parts = urllib.parse.urlparse(url)
@@ -76,4 +84,5 @@ def index():
     return render_template('index.html', domains=predefined_domains)
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=5000)
+    context = ('/app/cert.pem', '/app/key.pem')  # Certificate and key
+    run_simple('0.0.0.0', 5000, app, ssl_context=context)

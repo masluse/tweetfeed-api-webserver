@@ -10,6 +10,7 @@ COPY templates /app/templates
 
 # Installieren Sie die benötigten Python-Bibliotheken
 RUN pip install flask requests
+RUN apt-get update && apt-get install -y openssl
 
 # Setzen Sie die Umgebungsvariable für blockierte Domains
 ENV BLOCKED_DOMAINS=""
