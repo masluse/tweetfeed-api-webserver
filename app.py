@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, jsonify
 import requests
 import json
 import urllib.parse
@@ -37,12 +37,12 @@ def index():
         desired_date_str = request.form.get('date')
         block_all_domains = 'block_domains' in request.form
         if not desired_date_str:
-            return "Bitte gib ein gültiges Datum ein."
+            return jsonify({"error": "Bitte gib ein gültiges Datum ein."})
 
         try:
             desired_date = datetime.strptime(desired_date_str, '%Y-%m-%d').date()
         except ValueError:
-            return "Ungültiges Datum. Bitte verwende das Format JJJJ-MM-TT."
+            return jsonify({"error": "Ungültiges Datum. Bitte verwende das Format JJJJ-MM-TT."})
 
         today = datetime.now().date()
         last_week = today - timedelta(days=7)
@@ -50,7 +50,7 @@ def index():
         last_year = today - timedelta(days=365)
 
         if desired_date > today:
-            return "Das ausgewählte Datum liegt in der Zukunft."
+            return jsonify({"error": "Das ausgewählte Datum liegt in der Zukunft."})
 
         if desired_date == today:
             api_endpoint = 'https://api.tweetfeed.live/v1/today'
@@ -59,7 +59,7 @@ def index():
         elif desired_date >= this_month:
             api_endpoint = 'https://api.tweetfeed.live/v1/month'
         else:
-            return "Das gewünschte Datum liegt mehr als 1 Monat zurück."
+            return jsonify({"error": "Das gewünschte Datum liegt mehr als 1 Monat zurück."})
 
         response = requests.get(api_endpoint)
         if response.status_code == 200:
@@ -79,7 +79,7 @@ def index():
                     elif entry['type'] == 'ip':
                         ips.append(entry["value"])
 
-            return render_template('index.html', urls=' OR '.join(urls), ips=' OR '.join(ips), num_urls=len(urls), num_ips=len(ips), domains=predefined_domains)
+            return jsonify({'urls': ' OR '.join(urls), 'ips': ' OR '.join(ips), 'num_urls': len(urls), 'num_ips': len(ips)})
 
     return render_template('index.html', domains=predefined_domains)
 
