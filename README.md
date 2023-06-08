@@ -50,3 +50,5 @@ services:
 - Diese Anwendung ist nur für den persönlichen Gebrauch gedacht und sollte nicht in einer produktiven Umgebung eingesetzt werden.
 
 Docker Hub: https://hub.docker.com/r/masluse/tweetfeed-api-webserver
+
+![image](https://github.com/masluse/tweetfeed-api-webserver/assets/122784119/da77c287-3871-44a0-b883-8103f3918f87)
