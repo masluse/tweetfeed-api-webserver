@@ -28,6 +28,14 @@
             color: #f8f9fa;
         }
 
+        .blocked-domain {
+            color: red;
+        }
+
+        .unblocked-domain {
+            color: green;
+        }
+
         @media (max-width: 600px) {
             .form-group.block-domains {
                 position: static;
@@ -53,7 +61,7 @@
             <label for="block_domains">Blockieren</label><br>
 
             <p>Zu blockierende Domains:</p>
-            <ul>
+            <ul id="domain_list">
             {% for domain in domains %}
                 <li>{{ domain }}</li>
             {% endfor %}
@@ -90,6 +98,19 @@
                         alert(data.error);
                     } else {
                         $('#result').html('<h2>URLs (' + data.num_urls + ')</h2><p>' + data.urls + '</p>' + '<h2>IPs (' + data.num_ips + ')</h2><p>' + data.ips + '</p>');
+
+                        var domainList = $('#domain_list').children();
+                        domainList.removeClass('blocked-domain unblocked-domain');
+                        if ($('#block_domains').prop('checked')) {
+                            domainList.each(function() {
+                                var domainText = $(this).text();
+                                if (data.blocked_urls.includes(domainText)) {
+                                    $(this).addClass('blocked-domain');
+                                } else {
+                                    $(this).addClass('unblocked-domain');
+                                }
+                            });
+                        }
                     }
                 }
             });

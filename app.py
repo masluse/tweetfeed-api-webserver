@@ -14,9 +14,7 @@ app = Flask(__name__)
 blocked_domains = os.getenv('BLOCKED_DOMAINS', '')
 predefined_domains = blocked_domains.split(',') if blocked_domains else None
 
-# Check if SSL certificates exist or not
 if not os.path.isfile('/app/cert.pem') or not os.path.isfile('/app/key.pem'):
-    # Generate self-signed SSL certificate
     subprocess.call(['openssl', 'req', '-x509', '-newkey', 'rsa:4096', '-nodes', '-out', '/app/cert.pem', '-keyout', '/app/key.pem', '-days', '365', '-subj', '/CN=localhost'])
 
 def remove_port_from_url(url):
@@ -26,10 +24,10 @@ def remove_port_from_url(url):
 def is_valid_url(url, block_all_domains):
     ip_pattern = re.compile(r'^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$')
     if ip_pattern.match(url):
-        return False
+        return False, None
     if block_all_domains and any(domain in url for domain in predefined_domains):
-        return False
-    return True
+        return False, url
+    return True, None
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -67,6 +65,7 @@ def index():
 
             urls = []
             ips = []
+            blocked_urls = []
 
             for entry in data:
                 entry_date = datetime.strptime(entry['date'].split(' ')[0], '%Y-%m-%d').date()
@@ -74,12 +73,15 @@ def index():
                     if entry['type'] == 'url':
                         url = entry['value']
                         url_without_port = remove_port_from_url(url)
-                        if is_valid_url(url_without_port, block_all_domains):
+                        valid, blocked_url = is_valid_url(url_without_port, block_all_domains)
+                        if valid:
                             urls.append(f'"{url_without_port}"')
+                        if blocked_url:
+                            blocked_urls.append(f'"{blocked_url}"')
                     elif entry['type'] == 'ip':
                         ips.append(entry["value"])
 
-            return jsonify({'urls': ' OR '.join(urls), 'ips': ' OR '.join(ips), 'num_urls': len(urls), 'num_ips': len(ips)})
+            return jsonify({'urls': ' OR '.join(urls), 'ips': ' OR '.join(ips), 'num_urls': len(urls), 'num_ips': len(ips), 'blocked_urls': ' OR '.join(blocked_urls)})
 
     return render_template('index.html', domains=predefined_domains)
 
