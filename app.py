@@ -14,9 +14,6 @@ app = Flask(__name__)
 blocked_domains = os.getenv('BLOCKED_DOMAINS', '')
 predefined_domains = blocked_domains.split(',') if blocked_domains else None
 
-if not os.path.isfile('/app/cert.pem') or not os.path.isfile('/app/key.pem'):
-    subprocess.call(['openssl', 'req', '-x509', '-newkey', 'rsa:4096', '-nodes', '-out', '/app/cert.pem', '-keyout', '/app/key.pem', '-days', '365', '-subj', '/CN=localhost'])
-
 def remove_port_from_url(url):
     url_parts = urllib.parse.urlparse(url)
     return url_parts.netloc.split(':')[0]
@@ -51,11 +48,11 @@ def index():
             return jsonify({"error": "Das ausgewählte Datum liegt in der Zukunft."})
 
         if desired_date == today:
-            api_endpoint = 'https://api.tweetfeed.live/v1/today'
+            api_endpoint = 'http://api.tweetfeed.live/v1/today'
         elif desired_date > last_week:
-            api_endpoint = 'https://api.tweetfeed.live/v1/week'
+            api_endpoint = 'http://api.tweetfeed.live/v1/week'
         elif desired_date >= this_month:
-            api_endpoint = 'https://api.tweetfeed.live/v1/month'
+            api_endpoint = 'http://api.tweetfeed.live/v1/month'
         else:
             return jsonify({"error": "Das gewünschte Datum liegt mehr als 1 Monat zurück."})
 
@@ -86,5 +83,4 @@ def index():
     return render_template('index.html', domains=predefined_domains)
 
 if __name__ == "__main__":
-    context = ('/app/cert.pem', '/app/key.pem')  # Certificate and key
-    run_simple('0.0.0.0', 5000, app, ssl_context=context)
+    run_simple('0.0.0.0', 5000, app)
