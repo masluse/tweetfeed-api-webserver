@@ -9,13 +9,15 @@ WORKDIR /app
 # Ändern Sie die Besitzverhältnisse des Verzeichnisses
 RUN chown -R tweetfeed:tweetfeed /app
 
-USER tweetfeed
 # Kopieren Sie die benötigten Dateien in den Container
 COPY app.py /app
 COPY templates /app/templates
 
 # Ändern Sie die Besitzverhältnisse des Verzeichnisses
 RUN chown -R tweetfeed:tweetfeed /app
+
+USER tweetfeed
+
 
 # Installieren Sie die benötigten Python-Bibliotheken
 RUN pip install flask requests
