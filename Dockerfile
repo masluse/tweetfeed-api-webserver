@@ -1,6 +1,8 @@
 # Verwenden Sie ein offizielles Python-Image als Eltern-Image
 FROM python:3.9-slim
 
+RUN useradd -m tweetfeed
+
 # Setzen Sie das Arbeitsverzeichnis im Container auf /app
 WORKDIR /app
 
@@ -14,6 +16,11 @@ RUN apt-get update && apt-get install -y openssl
 
 # Setzen Sie die Umgebungsvariable für blockierte Domains
 ENV BLOCKED_DOMAINS=""
+
+USER tweetfeed
+
+RUN chown -R tweetfeed:tweetfeed /app
+
 
 # Starten Sie die App, wenn der Container gestartet wird
 CMD ["python", "app.py"]
