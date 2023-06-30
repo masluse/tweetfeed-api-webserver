@@ -6,6 +6,8 @@ RUN useradd -m tweetfeed
 # Setzen Sie das Arbeitsverzeichnis im Container auf /app
 WORKDIR /app
 
+RUN chown -R tweetfeed:tweetfeed /app
+
 # Kopieren Sie die benötigten Dateien in den Container
 COPY app.py /app
 COPY templates /app/templates
@@ -19,7 +21,7 @@ ENV BLOCKED_DOMAINS=""
 
 USER tweetfeed
 
-RUN chown -R tweetfeed:tweetfeed /app
+
 
 
 # Starten Sie die App, wenn der Container gestartet wird
