@@ -52,3 +52,65 @@ services:
 Docker Hub: https://hub.docker.com/r/masluse/tweetfeed-api-webserver
 
 ![image](https://github.com/masluse/tweetfeed-api-webserver/assets/122784119/da77c287-3871-44a0-b883-8103f3918f87)
+
+``` bash
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tweetfeed
+  labels:
+    app: tweetfeed
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: tweetfeed
+  template:
+    metadata:
+      labels:
+        app: tweetfeed
+    spec:
+      containers:
+      - name: tweetfeed
+        image: masluse/tweetfeed-api-webserver:latest
+        ports:
+        - containerPort: 5000
+        env:
+        - name: BLOCKED_DOMAINS
+          value: "github.com,dropbox.com,youtu.be,bit.ly,mega.nz,bitbucket.org,raw.githubusercontent.com,drive.google.com"
+        - name: TZ
+          value: "Europe/Zurich"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: tweetfeed
+  name: tweetfeed
+spec:
+  ports:
+  - name: 5000-tcp
+    port: 5000
+    protocol: TCP
+    targetPort: 5000
+  selector:
+    app: tweetfeed
+  sessionAffinity: None
+type: ClusterIP
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  labels:
+    app: tweetfeed
+  name: tweetfeed
+spec:
+  port:
+    targetPort: 5000-tcp
+  to:
+    kind: Service
+    name: tweetfeed
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
+```
