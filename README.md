@@ -53,7 +53,7 @@ Docker Hub: https://hub.docker.com/r/masluse/tweetfeed-api-webserver
 
 ![image](https://github.com/masluse/tweetfeed-api-webserver/assets/122784119/da77c287-3871-44a0-b883-8103f3918f87)
 
-``` bash
+``` yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
